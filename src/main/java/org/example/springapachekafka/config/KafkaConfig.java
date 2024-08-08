@@ -1,13 +1,9 @@
 package org.example.springapachekafka.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
 public class KafkaConfig {
@@ -17,17 +13,8 @@ public class KafkaConfig {
     NewTopic exRateTopic() {
         return TopicBuilder.name("exchange_rates")
                 .partitions(2)
+                .compact()
                 .build();
     }
 
-    @Bean
-    ProducerFactory<String, Object> producerFactory(KafkaProperties kafkaProperties) {
-        return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties(null));
-    }
-
-
-    @Bean
-    KafkaTemplate<String, Object> jsonKafkaTemplate(ProducerFactory<String, Object> producerFactory) {
-        return new KafkaTemplate<>(producerFactory);
-    }
 }
